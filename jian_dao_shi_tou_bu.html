@@ -42,17 +42,26 @@
     <script>
         alert("作者不是很会搞网页，就做了一个简单的小游戏")
     </script>
+    <script>
+        let ps=0;
+        let cs=0;
+        let ph=0;
+        let ch=0;
+        function start() {
+         alert("分数已归零")
+        }
+    </script>
     <div id=info>
       <div id=player>
-            <img src="img/ren.png" alt="找不到图片 o(TヘTo)" width="100px">
+            <img id=ph src="img/ren.png" alt="找不到图片 o(TヘTo)" width="100px">
             <h2>玩家</h2>
-            <h5>分数:</h5>
+            <h5 id=ps>分数:</h5>
       </div>
-      <button>开始</button>
+      <button onclick="start()">开始</button>
       <div id=computer>
-        <img src="img/diannao.png" alt="找不到图片 o(TヘTo)" width="100px">
+        <img id=ch src="img/diannao.png" alt="找不到图片 o(TヘTo)" width="100px">
         <h2>电脑</h2>
-        <h5>分数:</h5>
+        <h5 id=cs>分数:</h5>
       </div>
     </div>
     <div id=operation>
