@@ -49,6 +49,13 @@
         let ch=0;
         function start() {
          alert("分数已归零")
+         ps=0;
+         cs=0;
+         refreshUI();
+        }
+
+        function refreshUI() {
+         document.getElementById("ps").innerText ="分数:"+ps;
         }
     </script>
     <div id=info>
