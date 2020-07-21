@@ -69,7 +69,15 @@
         function refreshUI() {
          document.getElementById("ps").innerText ="分数:"+ps;
          document.getElementById("cs").innerText ="分数:"+cs;
-         
+         picturename="img/ren.png";
+         if(ph==1){
+            picturename="img/剪刀.jpg"
+         }else if(ph==2){
+            picturename="img/石头.jpg"
+         }else if(ph==3){
+            picturename="img/布.jpg"
+         }
+         document.getElementById("ph").setAttribute("scr",picturename)
         }
     </script>
     <div id=info>
