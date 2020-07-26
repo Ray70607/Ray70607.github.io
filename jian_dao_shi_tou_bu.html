@@ -68,9 +68,11 @@
             ph=playhand;
             if( ph - ch === 1 || ph - ch === -2 ) {
                 ps ++;
+                document.getElementById("caipan").innerText ="玩家胜";
             }
             else if(ch - ph === 1 || ch - ph === -2) {
                 cs ++;
+                document.getElementById("caipan").innerText ="电脑胜";
             }
             refreshUI();
         }
@@ -105,7 +107,7 @@
             <h5 id=ps>分数:</h5>
       </div>
       <div id=middle>
-       <h4 id=caipan>o</h4>
+       <h4 id=caipan> </h4>
        <button onclick="start()">开始</button>
       </div>
       <div id=computer>
