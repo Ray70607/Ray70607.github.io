@@ -1,0 +1,34 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>857</title>
+<script>
+        function w() {
+         document.getElementById("b").setAttribute("onclick","b()");
+         document.getElementById("body").setAttribute("bgcolor","white");
+        }
+        function b() {
+         document.getElementById("b").setAttribute("onclick","w()");
+         document.getElementById("body").setAttribute("bgcolor","black");
+        }
+</script>
+</head>
+<body id="body" bgcolor="white">
+<img src="img/常用图片库/代.jpg" height="450px" width="450px"/><br>
+<button id="b" onclick="w()" style="margin-left: 460px;margin-bottom: 40px;">857</button>
+<marquee behavior="alternate" direction="right">
+    <font face="华文彩云" size="8">
+        怎么忍心怪你犯了错
+    </font>
+</marquee>
+<marquee behavior="alternate" direction="left">
+    <font face="华文彩云" size="8">
+        是我给你自由过了火
+    </font>
+</marquee>
+</body>
+</html>
