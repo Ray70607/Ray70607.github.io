@@ -9,11 +9,14 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>857</title>
 <script>
-        function w() {
-         document.getElementById("b").setAttribute("onclick","b()");
-         document.getElementById("body").setAttribute("bgcolor","white");
+    let n=0;
+   function w() {
+       n++;
+       document.getElementById("b").setAttribute("onclick","b()");
+       document.getElementById("body").setAttribute("bgcolor","white");
+       document.getElementById("cishu").innerText="次数："+n;
         }
-        function b() {
+   function b() {
          document.getElementById("b").setAttribute("onclick","w()");
          document.getElementById("body").setAttribute("bgcolor","black");
         }
@@ -23,7 +26,10 @@
 </script>
 </head>
 <body id="body" bgcolor="white">
-<img src="img/常用图片库/代.jpg" height="450px" width="450px"/><br>
+<div style="display: flex">
+    <img src="img/常用图片库/代.jpg" height="450px" width="450px"/>
+    <h4 id="cishu" style="margin-top: 410px;margin-left: 10px;"></h4>
+</div>
 <button id="b" onclick="b()" style="margin-left: 460px;margin-bottom: 40px;">857</button>
 <marquee behavior="alternate" direction="right">
     <font face="华文彩云" size="8">
