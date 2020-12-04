@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--Powered by webstorm-->
-<!--Written by 氵-->
+<!--Written by 子潇-->
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -74,8 +74,10 @@
          ch=0;
          refreshUI();
          document.getElementById("caipan").innerText ="";
+         document.getElementById("start").setAttribute("style","height: 23px;margin-top: 80px;margin-left: 30px;")
         }
         function play(playhand){
+            document.getElementById("start").setAttribute("style","height: 23px;margin-top: 38px;margin-left: 30px;")
             ch=Math.ceil(Math.random()*3);
             ph=playhand;
             if( ph - ch === 1 || ph - ch === -2 ) {
@@ -123,7 +125,7 @@
       </div>
       <div id=middle>
        <h4 id=caipan> </h4>
-       <button onclick="start()">分数归零</button>
+       <button onclick="start()" style="height: 23px;margin-top: 80px;margin-left: 30px;" id="start">分数归零</button>
       </div>
       <div id=computer>
         <img id=ch src="img/diannao.png" alt="找不到图片 o(TヘTo)">
