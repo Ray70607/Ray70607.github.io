@@ -10,16 +10,46 @@
     <title>857</title>
 <script>
     let n=0;
-   function w() {
+    function q(){
+        n=0;
+        queding();
+        document.getElementById("body").setAttribute("bgcolor","white");
+    }
+    function queding(){
+        var sc=document.getElementById("t").value;
+        if (sc=="d"){
+            document.getElementById("img").setAttribute("src","img/dai.jpg");
+            document.getElementById("txt1").innerText ="怎么忍心怪你犯了错";
+            document.getElementById("txt2").innerText ="是我给你自由过了火";
+        }
+        if (sc=="dj"){
+            document.getElementById("img").setAttribute("src","img/jing.jpg");
+            document.getElementById("txt1").innerText ="“雅鲁藏布江”";
+            document.getElementById("txt2").innerText ="下次不许写错了";
+        }
+        if (sc=="j"){
+            document.getElementById("img").setAttribute("src","img/jia.jpg");
+            document.getElementById("txt1").innerText ="作业又没写？";
+            document.getElementById("txt2").innerText ="下周五直播吧";
+        }
+        if (sc=="z"){
+            document.getElementById("img").setAttribute("src","img/zhou.jpg");
+            document.getElementById("txt1").innerText ="外国人会直接说I Love You";
+            document.getElementById("txt2").innerText ="而中国人会说今晚月色真美";
+        }
+    }
+    function w() {
        n++;
        document.getElementById("b").setAttribute("onclick","b()");
        document.getElementById("body").setAttribute("bgcolor","white");
        document.getElementById("cishu").innerText="次数："+n;
-        }
-   function b() {
+       queding();
+    }
+    function b() {
          document.getElementById("b").setAttribute("onclick","w()");
          document.getElementById("body").setAttribute("bgcolor","black");
-        }
+         queding();
+    }
 </script>
 <script>
         alert("铁汁们，一起857老代")
@@ -27,17 +57,28 @@
 </head>
 <body id="body" bgcolor="white">
 <div style="display: flex">
-    <img src="img/dai.jpg" height="450px" width="450px"/>
+    <img id="img" src="img/dai.jpg" height="450px" width="450px"/>
     <h4 id="cishu" style="margin-top: 410px;margin-left: 10px;"></h4>
 </div>
-<button id="b" onclick="b()" style="margin-left: 460px;margin-bottom: 40px;">857</button>
+<div style="display: flex;height: 18px;margin-bottom: 40px;">
+    <button id="b" onclick="b()" style="margin-left: 460px;">857</button>
+    &nbsp;&nbsp;&nbsp;请选择857谁:&nbsp;
+    <select name="teacher" id="t" style="height: 18px;">
+        <option value="d" selected="selected">老代</option>
+        <option value="j">老贾</option>
+        <option value="z">老周</option>
+        <option value="dj">地精</option>
+    </select>
+    <button onclick="q()" style="height: 18px;">确定</button>
+    
+</div>
 <marquee behavior="alternate" direction="right">
-    <font face="华文彩云" size="8">
+    <font face="华文彩云" size="8" id="txt1">
         怎么忍心怪你犯了错
     </font>
 </marquee>
 <marquee behavior="alternate" direction="left">
-    <font face="华文彩云" size="8">
+    <font face="华文彩云" size="8" id="txt2">
         是我给你自由过了火
     </font>
 </marquee>
