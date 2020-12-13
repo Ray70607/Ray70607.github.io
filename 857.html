@@ -10,11 +10,6 @@
     <title>857</title>
 <script>
     let n=0;
-    function q(){
-        n=0;
-        queding();
-        document.getElementById("body").setAttribute("bgcolor","white");
-    }
     function queding(){
         var sc=document.getElementById("t").value;
         if (sc=="d"){
@@ -63,14 +58,12 @@
 <div style="display: flex;height: 18px;margin-bottom: 40px;">
     <button id="b" onclick="b()" style="margin-left: 460px;">857</button>
     &nbsp;&nbsp;&nbsp;请选择857谁:&nbsp;
-    <select name="teacher" id="t" style="height: 18px;">
+    <select name="teacher" id="t" style="height: 18px;" onmouseenter="queding()" onmouseleave="queding()">
         <option value="d" selected="selected">老代</option>
         <option value="j">老贾</option>
         <option value="z">老周</option>
         <option value="dj">地精</option>
     </select>
-    <button onclick="q()" style="height: 18px;">确定</button>
-    
 </div>
 <marquee behavior="alternate" direction="right">
     <font face="华文彩云" size="8" id="txt1">
