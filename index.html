@@ -7,20 +7,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <style>
-        #bd h1{
-            color: gold;
-            background-color: #59e1e424;
-            width: 275px;
-        }
-        #bd a{
-            color: green;
-        }
-    </style>
 </head>
+<script src="js/cookies.js"></script>
+<script>
+    window.onload=function(){
+        document.getElementById('outPut').innerText='My cookie is'+getCookie(myCookie)
+    }
+</script>
 <body>
     <div id=bd>
-     <h1>Hello world</h1>
+     <h1 id="outPut"></h1>
      <a href="http://www.baidu.com">点击跳转到百度</a>
     </div>
 </body>
