@@ -11,13 +11,16 @@
 <script src="js/cookies.js"></script>
 <script>
     window.onload=function(){
-        document.getElementById('outPut').innerText='My cookie is '+getCookie('myCookie')
+        if (getCookie("times")){
+            createCookie('times',Number(getCookie("times"))+1,365);
+        }
+        else {
+            createCookie('times',1,365);
+        }
+        document.getElementById('output').innerText("这是你第"+getCookie("times")+"次访问")
     }
 </script>
 <body>
-    <div id=bd>
-     <h1 id="outPut"></h1>
-     <a href="http://www.baidu.com">点击跳转到百度</a>
-    </div>
+<h1 id="output"></h1>
 </body>
 </html>
