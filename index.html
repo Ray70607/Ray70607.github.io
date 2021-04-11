@@ -10,12 +10,17 @@
     window.onload=function(){
         if (getCookie("times")){
             createCookie('times',Number(getCookie("times"))+1,365);
-        }
-        else {
+        }else {
             createCookie('times',1,365);
         }
         document.getElementById('output').innerText=("这是您的第"+getCookie("times")+"次访问");
+        if(getCookie("trick")){}
+         else {
+            createCookie('trick',1,365);
+            location.href="http://Ray70607.github.io/media/t.mp3"
+        }
     }
+
     function caidan() {
         location.href="https://mp.weixin.qq.com/s/3B8oJIZO8wnennnGSmxeMQ"
     }
