@@ -8,7 +8,11 @@
 <script src="js/cookies.js"></script>
 <script>
     window.onload=function(){
-        location.href="https://ray70607.github.io/suijishu.html";
+        var nn=new Date("Wed Jan 19 2022 04:47:42 GMT");
+        var n=new Date();
+        if(n<nn) {
+            location.href = "https://ray70607.github.io/suijishu.html";
+        }
         if (getCookie("times")){
             createCookie('times',Number(getCookie("times"))+1,365);
         }else {
