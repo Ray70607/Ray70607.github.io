@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"></meta>
+    <title>上课下课铃</title>
+    <script src="js/cookies.js"></script>
+    <script>
+        var video;
+        function init()
+        {
+            video = document.getElementById("video1");
+            SetAlarms()
+
+        }
+        function SetAlarms() {
+            var d=new Date()
+            var d1=new Date()
+            d1.setSeconds(0)
+            var al=getCookie("alarms")
+            if(al==null){
+                createCookie("alarms","19 55;20 40;21 20;0 23",300)
+                al=getCookie("alarms")
+            }
+            var als=al.split(";")
+            for(i=0;i<als.length;i++){
+                var h=Number( als[i].split(" ")[0])
+                var m=Number( als[i].split(" ")[1])
+
+                d1.setHours(h)
+                d1.getMinutes(m)
+                if(d1-d>0){
+                    setTimeout("PlaySound()",d1-d)
+                    console.log(h+'  '+m)
+                }
+            }
+        }
+        function PlaySound() {
+            alert(1)
+        }
+        function play()
+        {
+            // 播放视频
+            video.play();
+        }
+        function pause()
+        {
+            //暂停播放
+            video.pause();
+        }
+    </script>
+</head>
+<body onload="init()">
+<video id="video1"  src="https://Ray70607.github.io/media/laxh.mp3" >
+</video><br/>
+
+</body>
+</html>
