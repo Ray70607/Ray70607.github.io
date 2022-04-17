@@ -6,6 +6,8 @@
     <script src="js/cookies.js"></script>
     <script>
         var video;
+        var al
+        var d1
         function init()
         {
             video = document.getElementById("video1");
@@ -14,28 +16,33 @@
         }
         function SetAlarms() {
             var d=new Date()
-            var d1=new Date()
-            d1.setSeconds(0)
-            var al=getCookie("alarms")
+
+
+            al=getCookie("alarms")
             if(al==null){
-                createCookie("alarms","19 55;20 40;21 20;0 23",300)
+                createCookie("alarms","19 55;20 40;21 20",300)
                 al=getCookie("alarms")
             }
             var als=al.split(";")
             for(i=0;i<als.length;i++){
                 var h=Number( als[i].split(" ")[0])
                 var m=Number( als[i].split(" ")[1])
-
+                console.log('='+h+'  '+m)
+                d1=new Date()
+                d1.setSeconds(0)
                 d1.setHours(h)
-                d1.getMinutes(m)
+                d1.setMinutes(m)
+                console.log(d1);
                 if(d1-d>0){
                     setTimeout("PlaySound()",d1-d)
                     console.log(h+'  '+m)
+                    console.log(d1)
                 }
             }
         }
         function PlaySound() {
-            alert(1)
+            play()
+            setTimeout("video.currentTime=0",30000)
         }
         function play()
         {
