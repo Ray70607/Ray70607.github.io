@@ -41,20 +41,22 @@
                 }
             }
             al=getCookie("L_alarms")
-            var als=al.split(";")
-            for(i=0;i<als.length;i++){
-                var h=Number( als[i].split(" ")[0])
-                var m=Number( als[i].split(" ")[1])
-                console.log('='+h+'  '+m)
-                d1=new Date()
-                d1.setSeconds(0)
-                d1.setHours(h)
-                d1.setMinutes(m)
-                console.log(d1);
-                if(d1-d>0){
-                    setTimeout("PlayLongSound()",d1-d)
-                    console.log("long alarm "+h+'  '+m)
-                    console.log(d1)
+            if(al!=null){
+                var als=al.split(";")
+                for(i=0;i<als.length;i++){
+                    var h=Number( als[i].split(" ")[0])
+                    var m=Number( als[i].split(" ")[1])
+                    console.log('='+h+'  '+m)
+                    d1=new Date()
+                    d1.setSeconds(0)
+                    d1.setHours(h)
+                    d1.setMinutes(m)
+                    console.log(d1);
+                    if(d1-d>0){
+                        setTimeout("PlayLongSound()",d1-d)
+                        console.log("long alarm "+h+'  '+m)
+                     console.log(d1)
+                    }
                 }
             }
         }
