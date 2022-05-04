@@ -23,7 +23,7 @@
 
             al=getCookie("alarms")
             if(al==null){
-                createCookie("alarms","19 55;20 40",300)
+                createCookie("alarms","18 55;20 40",300)
                 createCookie("L_alarms","21 20",300)
                 al=getCookie("alarms")
             }
@@ -86,26 +86,41 @@
         function initTime() {
             text=document.getElementById('txt1')
             var now=new Date()
-            var zk=new Date(1658628000000)
+            var zk=new Date(1658628000000)//中考日期
             text.innerText=parseInt((zk-now)/60000)
+            setTimeout("changetime()",60000-now.getSeconds()*1000)
+            console.log(now)
+            console.log(60000-now.getSeconds()*1000)
+           // 60000-now.getSeconds()*1000
+
         }
         function changetime() {
-
+            text.innerText=Number(text.innerText)-1
+            setTimeout("changetime()",60000)
         }
     </script>
 </head>
+<style>
+    #info{
+        display: flex;
+        padding-top: 20px;
+        padding-bottom: 20px;
+        justify-content: center;
+    }</style>
 <body onload="init()">
 <video id="video1"  src="https://Ray70607.github.io/media/laxh.mp3"  hidden="true">
 </video>
+<div id="info">
 <font face="华文彩云" size="8" >
     离中考还有
 </font>
-<br>
-<font face="华文彩云" size="8" id="txt1">
+
+<font face="华文彩云" size="20" id="txt1">
 
 </font>
 <font face="华文彩云" size="8" >
     分钟
 </font>
+</div>
 </body>
 </html>
