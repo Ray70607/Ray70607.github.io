@@ -12,7 +12,7 @@
         function init()
         {
             video = document.getElementById("video1");
-            initTime()
+           // initTime()
             video.volume=0.07;
             SetAlarms()
 
@@ -83,45 +83,141 @@
             video.pause();
         }
         //================================
-        function initTime() {
-            console.log("退而结网")
-            text=document.getElementById('txt1')
-            var now=new Date()
-            var zk=new Date(1658628000000)//中考日期
-            text.innerText=parseInt((zk-now)/60000)
-            setTimeout("changetime()",60000-now.getSeconds()*1000)
-            console.log(now)
-            console.log(60000-now.getSeconds()*1000)
-           // 60000-now.getSeconds()*1000
 
+    </script>
+    <style>
+
+        /* general styling */
+        :root {
+            --smaller: .75;
         }
-        function changetime() {
-            text.innerText=Number(text.innerText)-1
-            setTimeout("changetime()",60000)
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+
+        body {
+            align-items: center;
+            background-color: #ffd54f;
+            display: flex;
+            font-family: -apple-system,
+            BlinkMacSystemFont,
+            "Segoe UI",
+            Roboto,
+            Oxygen-Sans,
+            Ubuntu,
+            Cantarell,
+            "Helvetica Neue",
+            sans-serif;
+        }
+
+        .container {
+            color: #333;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        h1 {
+            font-weight: normal;
+            letter-spacing: .125rem;
+            text-transform: uppercase;
+        }
+
+        li {
+            display: inline-block;
+            font-size: 1.5em;
+            list-style-type: none;
+            padding: 1em;
+            text-transform: uppercase;
+        }
+
+        li span {
+            display: block;
+            font-size: 4.5rem;
+        }
+
+        .emoji {
+            display: none;
+            padding: 1rem;
+        }
+
+        .emoji span {
+            font-size: 4rem;
+            padding: 0 .5rem;
+        }
+
+        @media all and (max-width: 768px) {
+            h1 {
+                font-size: calc(1.5rem * var(--smaller));
+            }
+
+            li {
+                font-size: calc(1.125rem * var(--smaller));
+            }
+
+            li span {
+                font-size: calc(3.375rem * var(--smaller));
+            }
+        }
+    </style>
+    <script>
+        function initclock() {
+            (function () {
+                const second = 1000,
+                    minute = second * 60,
+                    hour = minute * 60,
+                    day = hour * 24;
+
+                var today = new Date(),
+                    zhongk=new Date()
+                zhongk.setSeconds(0)
+                zhongk.setMilliseconds(0)
+                zhongk.setMinutes(0)
+                zhongk.setHours(9)
+                zhongk.setDate(24)
+                zhongk.setMonth(5)
+
+                if (today > zhongk) {
+                    zhongk = new Date(zhongk.getTime()+31536000000);//一年
+                }
+                const countDown =zhongk.getTime(),
+                    x = setInterval(function() {
+
+                        var now = new Date().getTime(),
+                            distance = countDown - now;
+                        // console.log(distance)
+                            document.getElementById("days").innerText = Math.floor(distance / (day)),
+                            document.getElementById("hours").innerText = Math.floor((distance % (day)) / (hour)),
+                            document.getElementById("minutes").innerText = Math.floor((distance % (hour)) / (minute)),
+                            document.getElementById("seconds").innerText = Math.floor((distance % (minute)) / second);
+
+                    }, 1000)
+            }());
         }
     </script>
 </head>
-<style>
-    #info{
-        display: flex;
-        padding-top: 20px;
-        padding-bottom: 20px;
-        justify-content: center;
-    }</style>
-<body onload="init()">
+<body onload="init();initclock()">
 <video id="video1"  src="https://Ray70607.github.io/media/laxh.mp3"  hidden="true">
 </video>
-<div id="info">
-<font face="华文彩云" size="8" >
-    离中考还有
-</font>
+<div class="container">
+    <h1 id="headline">Countdown to my 中考</h1>
+    <div id="countdown">
+        <ul>
+            <li><span id="days"></span>days</li>
+            <li><span id="hours"></span>Hours</li>
+            <li><span id="minutes"></span>Minutes</li>
+            <li><span id="seconds"></span>Seconds</li>
+        </ul>
+    </div>
 
-<font face="华文彩云" size="20" id="txt1">
-
-</font>
-<font face="华文彩云" size="8" >
-    分钟
-</font>
 </div>
+
 </body>
 </html>
