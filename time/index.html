@@ -99,7 +99,7 @@
 
                         const now = new Date().getTime(),
                             distance = countDown - now;
-                        console.log(distance)
+                       // console.log(distance)
                         document.getElementById("days").innerText = Math.floor(distance / (day)),
                             document.getElementById("hours").innerText = Math.floor((distance % (day)) / (hour)),
                             document.getElementById("minutes").innerText = Math.floor((distance % (hour)) / (minute)),
@@ -121,11 +121,7 @@
             <li><span id="seconds"></span>Seconds</li>
         </ul>
     </div>
-    <div id="content" class="emoji">
-        <span>🥳</span>
-        <span>🎉</span>
-        <span>🎂</span>
-    </div>
+
 </div>
 </body>
 </html>
