@@ -6,7 +6,7 @@
     <script src="js/cookies.js"></script>
     <script>
         var video;
-        var text
+       // var text
         var al
         var d1
         function init()
@@ -203,7 +203,8 @@
         }
     </script>
 </head>
-<body onload="init();initclock()">
+<body onload="initclock()">
+<a class="switcher" ></a>
 <video id="video1"  src="https://Ray70607.github.io/media/laxh.mp3"  hidden="true">
 </video>
 <div class="container">
@@ -213,7 +214,7 @@
             <li><span id="days"></span>days</li>
             <li><span id="hours"></span>Hours</li>
             <li><span id="minutes"></span>Minutes</li>
-            <li><span id="seconds"></span>Seconds</li>
+            <li><span id="seconds" onclick="init()"></span>Seconds</li>
         </ul>
     </div>
 
