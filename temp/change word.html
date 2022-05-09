@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>加油</title>
+    <style>
+        @import 'https://fonts.googleapis.com/css2?family=Goldman&display=swap';
+        html,
+        body {
+            background: #212121;
+            height: 100%;
+        }
+        .text-change-container {
+            height: 100%;
+            width: 100%;
+            justify-content: center;
+            align-items: center;
+            display: flex;
+        }
+        .text-change {
+            font-family: 'Goldman', monospace;
+            font-weight: normal;
+            font-size: larger;
+            color: #c8c8c8;
+            filter: drop-shadow(0 0 0.3em rgba(200,200,200,0.3));
+        }
+        .dud {
+            color: rgba(200,30,30,0.8);
+            filter: drop-shadow(0 0 0.5em #f00);
+        }
+
+    </style>
+    <script>
+        function initwords() {
+            class TextScramble {
+                constructor(el) {
+                    this.el = el
+                    this.chars = '!<>-_\\/[]{}—=+*^?#________'
+                    this.update = this.update.bind(this)
+                }
+                setText(newText) {
+                    const oldText = this.el.innerText
+                    const length = Math.max(oldText.length, newText.length)
+                    const promise = new Promise((resolve) => this.resolve = resolve)
+                    this.queue = []
+                    for (let i = 0; i < length; i++) {
+                        const from = oldText[i] || ''
+                        const to = newText[i] || ''
+                        const start = Math.floor(Math.random() * 40)
+                        const end = start + Math.floor(Math.random() * 40)
+                        this.queue.push({ from, to, start, end })
+                    }
+                    cancelAnimationFrame(this.frameRequest)
+                    this.frame = 0
+                    this.update()
+                    return promise
+                }
+                update() {
+                    var output = ''
+                    var complete = 0
+                    for (let i = 0, n = this.queue.length; i < n; i++) {
+                        var { from, to, start, end, char } = this.queue[i]
+                        if (this.frame >= end) {
+                            complete++
+                            output += to
+                        } else if (this.frame >= start) {
+                            if (!char || Math.random() < 0.28) {
+                                char = this.randomChar()
+                                this.queue[i].char = char
+                            }
+                            output += `<span class="dud">${char}</span>`
+                        } else {
+                            output += from
+                        }
+                    }
+                    this.el.innerHTML = output
+                    if (complete === this.queue.length) {
+                        this.resolve()
+                    } else {
+                        this.frameRequest = requestAnimationFrame(this.update)
+                        this.frame++
+                    }
+                }
+                randomChar() {
+                    return this.chars[Math.floor(Math.random() * this.chars.length)]
+                }
+            }
+
+            const phrases = [
+                '我们人生做的一切不是为了满足所有人，而是为了满足那些和你同频共振的一部分人。',
+                '我们也许会在起跑线上比别人晚起跑很多，但我们只要更加努力奔跑，就可以反超那些赢在起跑线上的人。',
+                '每个人都会觉得自己有各种缺点，但上帝还给了你一样礼物，它让我们翻越重重山岗走到现在，他是意志和精神。',
+                '所以让我们坚定意志，坚持不懈，去踏上这座高峰去看一看我们整正的潜力！' ,
+                '祝:一模，二模，中考顺利————家霖/子潇',
+
+            ]
+
+            const el = document.querySelector('.text-change')
+            const fx = new TextScramble(el)
+
+            var counter = 0
+            const next = () => {
+
+                fx.setText(phrases[counter]).then(() => {
+                    setTimeout(next, 5000)
+            })
+                counter = (counter + 1) % phrases.length
+            }
+
+            next()
+        }
+    </script>
+</head>
+<body onload="initwords()">
+<div class="text-change-container">
+    <div class="text-change"></div>
+</div><div class="text-change-container">
+    <div class="text-change"></div>
+</div>
+</body>
+</html>
