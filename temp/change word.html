@@ -20,9 +20,10 @@
         .text-change {
             font-family: 'Goldman', monospace;
             font-weight: normal;
-            font-size: larger;
+
             color: #c8c8c8;
             filter: drop-shadow(0 0 0.3em rgba(200,200,200,0.3));
+            font-size: 2rem;
         }
         .dud {
             color: rgba(200,30,30,0.8);
@@ -102,7 +103,7 @@
             const next = () => {
 
                 fx.setText(phrases[counter]).then(() => {
-                    setTimeout(next, 4000)
+                    setTimeout(next, 3000)
             })
                 counter = (counter + 1) % phrases.length
             }
@@ -112,7 +113,7 @@
     </script>
 </head>
 <body onload="initwords()">
-<div class="text-change-container">
+<div class="text-change-container"     font-size=" 4.5rem";>
     <div class="text-change"></div>
 </div><div class="text-change-container">
     <div class="text-change"></div>
