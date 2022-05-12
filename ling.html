@@ -14,7 +14,7 @@
             document.getElementById('seconds').setAttribute('onclick','')
             video = document.getElementById("video1");
            // initTime()
-            video.volume=0.07;
+            video.volume=0.07;//好好看看音量
             SetAlarms()
 
         }
@@ -24,8 +24,8 @@
 
             al=getCookie("alarms")
             if(al==null){
-                createCookie("alarms","18 55;20 40",300)
-                createCookie("L_alarms","21 20",300)
+                createCookie("alarms","7 20;8 00;8 50;9 30;10 10;11 00;12 20;13 30;14 20;15 10;16 10;17 00;19 00;19 50;20 40",300)
+                createCookie("L_alarms","7 55;8 40;9 30;10 00;10 50;11 40;13 20;14 10;15 00;15 50;16 50;17 40;19 40;20 30;21 20",300)
                 al=getCookie("alarms")
             }
             var als=al.split(";")
