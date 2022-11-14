@@ -1,10 +1,25 @@
+<input id="moveit" type="button" style="position: absolute; z-index: 1;left: 91%;top: 3%">
+<div id="tobeclear">
+    <input type="button" style="position: absolute; z-index: 100;left: 91%;top: 3%"onmouseover="rem00()" >
+
+</div>
+<script>
+    function rem00(){
+        document.getElementById('tobeclear').innerHTML=''
+        document.getElementById('moveit').style.top='26%'
+        document.getElementById('moveit').style.left='86.3%'
+
+    }
+</script>
 <div id="rickframe" style="
     position: absolute;
-    z-index: 10000;
+    z-index: 10;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
+
 ">
-    <iframe id="rickroll" style="position: absolute; opacity : 1;width:150%; height: 150%;align:center;" src=
+    <iframe id="rickroll" style="position: absolute; opacity : 0
+    ;width:100%; height: 100%;align:center;" src=
     'https://www.luogu.com.cn/'    scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe></div>
