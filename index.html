@@ -31,7 +31,7 @@
         They need us
     </div>
     <div style="width: 100%; height: 75vh; display: flex; flex-wrap: wrap; justify-content: center; align-items: center;">
-        <button style="width: 75%; height: 20%; margin: 2% 0;" id="d5">mai捐赠5￥</button>
+        <button style="width: 75%; height: 20%; margin: 2% 0;" id="d5">捐赠5￥</button>
         <button style="width: 75%; height: 20%; margin: 2% 0;"  id="d15">捐赠15￥</button>
         <button style="width: 75%; height: 20%; margin: 2% 0;" id="d55">捐赠55￥</button>
     </div>
@@ -67,7 +67,26 @@
         var newurl="https://pay.yujianfaka.com/submit.php?money=5.00&name=买一本书&notify_url=http://www.baidu.com&out_trade_no="+transferNo+"&pid=1168&return_url=http://www.bing.com&type="+getPaymentMethod()+"&sign="+sig+"&sign_type=MD5"
         location.href=newurl
     })
-    
+
+    document.getElementById('d15').addEventListener('click',function () {
+
+        var transferNo=Date.now()
+        var sig=md5("money=15.00&name=买一本书&notify_url=http://www.baidu.com&out_trade_no="+transferNo+"&pid=1168&return_url=http://www.bing.com&type="+getPaymentMethod()+"3vOEBNlNp3KDk3uLZ3OauuweAvukLknP")
+        //console.log(sig)
+        var newurl="https://pay.yujianfaka.com/submit.php?money=15.00&name=买一本书&notify_url=http://www.baidu.com&out_trade_no="+transferNo+"&pid=1168&return_url=http://www.bing.com&type="+getPaymentMethod()+"&sign="+sig+"&sign_type=MD5"
+        location.href=newurl
+    })
+
+    document.getElementById('d55').addEventListener('click',function () {
+
+        var transferNo=Date.now()
+        var sig=md5("money=55.00&name=买一本书&notify_url=http://www.baidu.com&out_trade_no="+transferNo+"&pid=1168&return_url=http://www.bing.com&type="+getPaymentMethod()+"3vOEBNlNp3KDk3uLZ3OauuweAvukLknP")
+        //console.log(sig)
+        var newurl="https://pay.yujianfaka.com/submit.php?money=55.00&name=买一本书&notify_url=http://www.baidu.com&out_trade_no="+transferNo+"&pid=1168&return_url=http://www.bing.com&type="+getPaymentMethod()+"&sign="+sig+"&sign_type=MD5"
+        location.href=newurl
+    })
+
+
 
 
 </script>
