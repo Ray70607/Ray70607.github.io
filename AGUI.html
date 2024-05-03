@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+<script src="https://www.desmos.com/api/v1.9/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
+<div id="geometry" style="width: 1000px; height: 700px;"></div>
+		<script>
+			var elt = document.getElementById('geometry');
+			var geometry = Desmos.Geometry(elt);
+			var prslist=[]
+			function getst() {
+				//alert(1)
+				var oblist=geometry.getState().expressions.list
+				 prslist=[]
+				for (var i=1;i<oblist.length-1;i++){
+					var parsed=parseString(oblist[i])
+					console.log(parsed)
+					prslist.push(parsed)
+				}
+			}
+			window.onload=function () {
+				document.getElementById('btn').addEventListener('click', function () {
+					var statement=translate()
+					setTimeout(function () {
+						var q=promptProof()
+						statement=stripLastSemicolon(statement)+' '+q
+						document.getElementById('o').innerHTML=statement.toLocaleLowerCase()
+					}, 1000)
+					
+				})
+			}
+			function stripLastSemicolon(str) {
+				// Find the last occurrence of a semicolon in the string
+				const lastIndex = str.lastIndexOf(';');
+				
+				// If semicolon is found, return the segment of the string before it
+				if (lastIndex !== -1) {
+					return str.substring(0, lastIndex);
+				}
+				
+				// If no semicolon found, return the original string
+				return str;
+			}
+
+			function parseString( obj) {
+				input=obj.latex
+				// Regular expression to match the token number, operator name, and tokens between left and right
+				var regex = /\\token{(\d+)}=\\operatorname{([^{}]*)}\\left\((.*?)\\right\)/g;
+				var match = regex.exec(input);
+				
+				// Object to store the parsed values
+				var result = {};
+				result.label=''
+				if(obj.label)
+					result.label=obj.label
+				result.id=obj.id
+				if (match) {
+					// Extracting token number
+					result.tokenNumber = parseInt(match[1]);
+					
+					// Extracting operator name or defaulting to "point"
+					result.operatorName = match[2] !== "" ? match[2] : "point";
+					
+					var tokensBetweenLeftAndRight = [];
+					var tokenRegex = /\\token{(\d+)}/g;
+					var tokenMatch;
+					
+					while ((tokenMatch = tokenRegex.exec(match[3])) !== null) {
+						tokensBetweenLeftAndRight.push(parseInt(tokenMatch[1]));
+					}
+					
+					result.tokensBetweenLeftAndRight = tokensBetweenLeftAndRight;
+
+					
+				} else {
+					// If no match is found, return null or handle the case as needed
+					var regex = /\\token{(\d+)}=\\.*?/g;
+					var match = regex.exec(input);
+					result.tokenNumber = parseInt(match[1]);
+					
+					// Extracting operator name or defaulting to "point"
+					result.operatorName ="point"
+					
+					
+				}
+				token_to_id[result.tokenNumber]=result.id
+				return result;
+			}
+			function autolabel() {
+				getst()
+				objls=prslist
+				var plc=countObjectsWithOperator(objls)
+				if (plc.length>24){
+					return null
+				}
+				var i=0
+				for (let charCode = 65; charCode <= 90; charCode++) {
+					const capitalLetter = String.fromCharCode(charCode);
+					if(usedlet.includes(capitalLetter))
+						continue
+					if(i>=plc.length)
+						break
+					while(token_to_label[prslist[plc[i]].tokenNumber]){
+						i++
+						if(i>=plc.length)
+							break
+					}
+					if(i>=plc.length)
+						break
+					geometry.setExpression({ id: token_to_id[prslist[plc[i]].tokenNumber], label: capitalLetter ,showLabel: true})
+					console.log({ id: token_to_id[prslist[plc[i]].tokenNumber], label: capitalLetter })
+					i++
+					
+					
+					
+				
+				}
+				countObjectsWithOperator(objls)
+				getst()
+
+			}
+			var usedlet=[]
+			var token_to_id={}
+			var token_to_label={}
+			function countObjectsWithOperator(objects) {
+				// Initialize count
+				let ans=[]
+				
+				// Iterate through each object in the list
+				for (let i = 0; i < objects.length; i++) {
+					if (objects[i].operatorName === "point" || objects[i].operatorName === "glider" || objects[i].operatorName === "intersection" ||objects[i].operatorName === "midpoint") {
+						// If it matches, increment the count
+						ans.push(i)
+						if(objects[i].label ){
+							token_to_label[objects[i].tokenNumber]=objects[i].label
+							if( !usedlet.includes(objects[i].label))
+								usedlet.push(objects[i].label)
+						}
+					}
+				}
+				
+				// Return the count
+				return ans;
+			}
+			
+			
+			
+			function translate() {
+				autolabel()
+				var token_to_index={}
+				for (let i=0;i<prslist.length;i++){
+					token_to_index[prslist[i].tokenNumber]=i
+				}
+				let ans=''
+				for (let i = 0; i < prslist.length; i++) {
+					var cur_point=prslist[i]
+					var cur_point_parse=''
+					if (prslist[i].operatorName === "point") {
+						ans+=(prslist[i].label+' = free; ')
+					}else if(prslist[i].operatorName=='glider'){
+						cur_point_parse=(prslist[i].label+' = ')
+						var father_index=token_to_index[cur_point.tokensBetweenLeftAndRight[0]]
+						if (['segment','line','ray'].includes(prslist[father_index].operatorName)){
+							var vlist=prslist[father_index].tokensBetweenLeftAndRight
+							var label1=prslist[token_to_index[vlist[0]]].label
+							var label2=prslist[token_to_index[vlist[1]]].label
+
+							cur_point_parse+='on_line '+prslist[i].label+' '+label1+' '+label2+'; '
+							
+						}else if(prslist[father_index].operatorName=='circle'){
+							var vlist=prslist[father_index].tokensBetweenLeftAndRight
+							var label1=prslist[token_to_index[vlist[0]]].label
+							var label2=prslist[token_to_index[vlist[1]]].label
+							
+							cur_point_parse+='on_circle '+prslist[i].label+' '+label1+' '+label2+'; '
+
+						}else if(prslist[father_index].operatorName=='perpendicular'){
+							var vlist=prslist[father_index].tokensBetweenLeftAndRight
+//							var label1=prslist[token_to_index[vlist[0]]].label
+							var label2=prslist[token_to_index[vlist[1]]].label
+							cur_point_parse+='on_tline '+label2 +' '
+							vlist=prslist[token_to_index[vlist[0]]].tokensBetweenLeftAndRight
+//							var vlist=prslist[father_index].tokensBetweenLeftAndRight
+							label1=prslist[token_to_index[vlist[0]]].label
+							label2=prslist[token_to_index[vlist[1]]].label
+							cur_point_parse+= label1+' '+label2+' ;'
+						}
+							
+						
+						
+						ans+=cur_point_parse
+					}else if(prslist[i].operatorName=='intersection'){
+						cur_point_parse=(prslist[i].label+' = ')
+						var father_index=token_to_index[cur_point.tokensBetweenLeftAndRight[0]]
+						if (['segment','line','ray'].includes(prslist[father_index].operatorName)){
+							var vlist=prslist[father_index].tokensBetweenLeftAndRight
+							var label1=prslist[token_to_index[vlist[0]]].label
+							var label2=prslist[token_to_index[vlist[1]]].label
+							
+							cur_point_parse+='on_line '+prslist[i].label+' '+label1+' '+label2+', '
+							
+						}else if(prslist[father_index].operatorName=='circle'){
+							var vlist=prslist[father_index].tokensBetweenLeftAndRight
+							var label1=prslist[token_to_index[vlist[0]]].label
+							var label2=prslist[token_to_index[vlist[1]]].label
+							
+							cur_point_parse+='on_circle '+prslist[i].label+' '+label1+' '+label2+', '
+							
+						}
+						else if(prslist[father_index].operatorName=='perpendicular'){
+							var vlist=prslist[father_index].tokensBetweenLeftAndRight
+							//							var label1=prslist[token_to_index[vlist[0]]].label
+							var label2=prslist[token_to_index[vlist[1]]].label
+							cur_point_parse+='on_tline '+label2 +' '
+							vlist=prslist[token_to_index[vlist[0]]].tokensBetweenLeftAndRight
+							//							var vlist=prslist[father_index].tokensBetweenLeftAndRight
+							label1=prslist[token_to_index[vlist[0]]].label
+							label2=prslist[token_to_index[vlist[1]]].label
+							cur_point_parse+= label1+' '+label2+', '
+						}
+						
+						var father_index=token_to_index[cur_point.tokensBetweenLeftAndRight[1]]
+						if (['segment','line','ray'].includes(prslist[father_index].operatorName)){
+							var vlist=prslist[father_index].tokensBetweenLeftAndRight
+							var label1=prslist[token_to_index[vlist[0]]].label
+							var label2=prslist[token_to_index[vlist[1]]].label
+							
+							cur_point_parse+='on_line '+prslist[i].label+' '+label1+' '+label2+'; '
+							
+						}else if(prslist[father_index].operatorName=='circle'){
+							var vlist=prslist[father_index].tokensBetweenLeftAndRight
+							var label1=prslist[token_to_index[vlist[0]]].label
+							var label2=prslist[token_to_index[vlist[1]]].label
+							
+							cur_point_parse+='on_circle '+prslist[i].label+' '+label1+' '+label2+'; '
+							
+						}
+//						ans+=cur_point_parse
+						else if(prslist[father_index].operatorName=='perpendicular'){
+							var vlist=prslist[father_index].tokensBetweenLeftAndRight
+							//							var label1=prslist[token_to_index[vlist[0]]].label
+							var label2=prslist[token_to_index[vlist[1]]].label
+							cur_point_parse+='on_tline '+label2 +' '
+							vlist=prslist[token_to_index[vlist[0]]].tokensBetweenLeftAndRight
+							//							var vlist=prslist[father_index].tokensBetweenLeftAndRight
+							label1=prslist[token_to_index[vlist[0]]].label
+							label2=prslist[token_to_index[vlist[1]]].label
+							cur_point_parse+= label1+' '+label2+'; '
+						}
+						ans+=cur_point_parse
+					}else if(prslist[i].operatorName=='midpoint'){
+						cur_point_parse=(prslist[i].label+' = midpoint '+prslist[i].label+' ')
+						var father_index=token_to_index[cur_point.tokensBetweenLeftAndRight[0]]
+						if (['segment','line','ray'].includes(prslist[father_index].operatorName)){
+							var vlist=prslist[father_index].tokensBetweenLeftAndRight
+							var label1=prslist[token_to_index[vlist[0]]].label
+							var label2=prslist[token_to_index[vlist[1]]].label
+							
+							cur_point_parse+=label1+' '+label2+'; '
+						}
+						ans+=cur_point_parse
+
+					}
+					
+					console.log(ans)
+				}
+						
+				
+				return ans
+			}
+			function promptProof() {
+				var t=document.getElementById('proof').value
+				if(t=='perpendicular'){
+					var l1=prompt("line #1")
+					var l2=prompt("line #2")
+					return ('? perp '+insertSpaceBetweenLetters(l1+l2))
+				}if(t=='length equal'){
+					var l1=prompt("segement #1")
+					var l2=prompt("segement #2")
+					return ('? cong '+insertSpaceBetweenLetters(l1+l2))
+
+				}if (t=='equal angles'){
+					alert('Note that angles have directions (signs) so the order between a b and c d matters. eqangle a b c d c d a b is false. The way to think about it is, angle ab-cd is the angle to turn line ab clockwise so it is parallel with the line cd. You can use counter-clockwise as the convention too, as long as for all angles the same convention is used')
+					var l1=prompt("angle #1")
+					l1=l1+l1[1]
+					var l2=prompt("angle #2")
+					l2=l2+l2[1]
+					return ('? eqangle '+insertSpaceBetweenLetters(l1+l2))
+				}if (t=='similar'){
+					var l1=prompt("triangles #1")
+					var l2=prompt("triangles #2 (in order)")
+					return ('? simtri '+insertSpaceBetweenLetters(l1+l2))
+				}if (t=='congruent'){
+					var l1=prompt("triangles #1")
+					var l2=prompt("triangles #2 (in order)")
+					return ('? contri '+insertSpaceBetweenLetters(l1+l2))
+				}if (t=='collinear'){
+					var l1=prompt("point #1")
+					var l2=prompt("point #2")
+					var l3=prompt('point #3')
+					return ('? coll '+insertSpaceBetweenLetters(l1+l2+l3))
+
+				}
+			}
+			function insertSpaceBetweenLetters(str) {
+				return str.split('').join(' ');
+			}
+
+		</script>
+		<select  id="proof">
+			<option value="equal angles">equal angles</option>
+			<option value="perpendicular">perpendicular</option>
+			<option value="length equal">length equal</option>
+			<option value="similar">similar triangles</option>
+			<option value="congruent">congruent triangles</option>
+			<option value="collinear">points collinear</option>
+
+		</select>
+		<button id="btn">proof</button>
+		<div id='o'></div>
+	</body>
+</html>
