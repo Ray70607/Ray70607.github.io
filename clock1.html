@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clock</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .quote-container {
+      text-align: center;
+      padding: 20px;
+      background-color: white;
+      border-radius: 8px;
+    }
+    #quote {
+      font-size: 50px;
+      font-style: italic;
+      margin-bottom: 10px;
+    }
+    #author, #book {
+      font-size: 14px;
+      color: #555;
+    }
+  </style>
+  <script >
+    var source =0
+    // Fetch the CSV file content
+    fetch('https://raw.gitmirror.com/elegantalchemist/literaryclock/refs/heads/main/quote%20to%20image/litclock_annotated_br2.csv')
+    .then(response => response.text())  // Convert the response to text (CSV content)
+    .then(csvData => {
+      // Set the JavaScript variable to the CSV data
+      source = csvData;
+      syncWithNextMinute();
+
+//    console.log(myVariable);  // Optionally, print it to the console
+    })
+    .catch(error => {
+      console.error('Error fetching the CSV:', error);
+    });
+    
+    function getTimeXMinutesEarlier(x) {
+      const currentTime = new Date();
+      currentTime.setTime(currentTime.getTime() - (x * 60000)); // 60000 ms = 1 minute
+      return currentTime;
+    }
+
+    function getCurrentTime(offset=0) {
+      
+      const now = new getTimeXMinutesEarlier(offset);
+      const hours = String(now.getHours()).padStart(2, '0');
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      return `${hours}:${minutes}`;
+    }
+    
+//  console.log(getCurrentTime());
+    function findAllIndexes(str, substring) {
+      let indexes = [];
+      let i = 0;
+      
+      // Keep searching for the substring until no more matches are found
+      while ((i = str.indexOf(substring, i)) !== -1) {
+        indexes.push(i);
+        i++; // Move past the last found index to search further
+      }
+      
+      return indexes;
+    }
+    function extractText(str, index) {
+      // Find the next 5 "|" characters starting from the given index
+      let positions = [];
+      for (let i = index; i < str.length; i++) {
+        if (str[i] === "|") {
+          positions.push(i);
+          if (positions.length === 5) break;
+        }
+      }
+      
+      if (positions.length < 5) {
+        console.error("Not enough '|' characters found.");
+        return null;
+      }
+      
+      // Extract the text between the '|' characters
+      let pieces = [
+        str.slice(positions[0] + 1, positions[1]),
+        str.slice(positions[1] + 1, positions[2]),
+        str.slice(positions[2] + 1, positions[3]),
+        str.slice(positions[3] + 1, positions[4]),
+      ];
+      
+      // Create the object with labeled keys
+      return {
+        time: pieces[0].trim(),
+        quote: pieces[1].trim(),
+        title: pieces[2].trim(),
+        author: pieces[3].trim(),
+      };
+    }
+
+    
+    function getRandomIndex(str, substring) {
+      const indexes = findAllIndexes(str, substring);
+      
+      if (indexes.length === 0) {
+        return null; // Return null if no indexes were found
+      }
+      
+      // Randomly pick an index from the found indexes
+      const randomIndex = Math.floor(Math.random() * indexes.length);
+      return indexes[randomIndex];
+    }
+    function bold_text(keyword, text) {
+      const regex = new RegExp(`(${keyword})`, 'gi');
+      return text.replace(regex, '<b>$1</b>');
+    }
+    
+
+    function ini(){
+      var flag=change_time()
+      var cnt=1
+      while (flag!=0){
+        flag=change_time(cnt)
+        cnt++
+
+      }
+      
+      
+    }
+    function change_time(offset=0){
+      var t=getCurrentTime(offset)
+      if (source.indexOf(t)==-1)return -1
+      var idx=getRandomIndex(source,t)
+      var ob=extractText(source,idx)
+      ob.quote=bold_text(ob.time,ob.quote)
+      document.getElementById("quote").innerHTML=ob.quote
+      document.getElementById("author").innerHTML=ob.author
+      document.getElementById("book").innerHTML=ob.title
+      
+      
+      
+      return 0
+    }
+    
+    
+    function syncWithNextMinute() {
+      ini()
+      const now = new Date();
+      const msUntilNextMinute = (60 - now.getSeconds()) * 1000 - now.getMilliseconds();  // Time remaining until the next full minute
+      
+      setTimeout(() => {
+        change_time();  // Call the function when the minute changes
+        setInterval(change_time, 60000);  // Then call change_time() every minute
+      }, msUntilNextMinute);
+    }
+  
+
+    
+
+  </script>
+  <style>
+    #quote {
+      color: grey;
+    }
+    
+    b {
+      color: black;
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="quote-container">
+    <div id="quote">The only way to do great work is to love what you do.</div>
+    <div id="author">- Steve Jobs</div>
+    <div id="book">From a Stanford commencement speech</div>
+  </div>
+
+</body>
+</html>
